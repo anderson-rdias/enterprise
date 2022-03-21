@@ -1,5 +1,6 @@
 package br.com.fiap.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +16,24 @@ import javax.persistence.Table;
 @Entity
 @SequenceGenerator(name="aluno",sequenceName="SB_TB_ALUNO",allocationSize=1)
 @Table(name="TB_ALUNO")
-public class Aluno {
+public class Aluno implements Serializable {
 	
+	private static final long serialVersionUID = 4197318312136828812L;
+	
+	public Aluno() {
+		this.ativo = true;
+		this.dataCadastro = LocalDateTime.now();
+		this.dataAtualizacao = LocalDateTime.now();
+	}
+	
+	public Aluno(String nome, String matricula, String cpf, LocalDate dataNascimento) {
+		this();
+		this.nome = nome;
+		this.matricula = matricula;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="aluno")
 	private Long id;
