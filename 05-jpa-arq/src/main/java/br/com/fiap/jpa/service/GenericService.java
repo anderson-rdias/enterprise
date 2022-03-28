@@ -11,14 +11,14 @@ public abstract class GenericService<T extends Serializable, PK extends Serializ
 	
 	private EntityManager entityManager;
 	
-	public abstract void inserir(T instancia);
-	public abstract void atualizar(T instancia);
+	public abstract void inserir(T instance);
+	public abstract void atualizar(T instance);
 	public abstract void remover(PK id);
 	public abstract T obter (PK id);
 	public abstract List<T> listar();
 	
 	public EntityManager getEntityManager() {
-		if (entityManager == null) {
+		if (entityManager == null || !entityManager.isOpen()) {
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 			entityManager.getTransaction().begin();
 		}
@@ -27,8 +27,10 @@ public abstract class GenericService<T extends Serializable, PK extends Serializ
 	}
 	
 	public void closeEntityManager() {
-		if (entityManager != null) {
-			entityManager.getTransaction().commit();
+		if (entityManager != null && entityManager.isOpen()) {
+			if(entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().commit();
+			}
 			entityManager.close();
 		}
 	}

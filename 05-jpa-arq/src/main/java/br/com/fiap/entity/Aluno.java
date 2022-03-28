@@ -5,11 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -59,7 +62,22 @@ public class Aluno implements Serializable {
 	@Column(name="dt_atualizacao", nullable = false)
 	private LocalDateTime dataAtualizacao;
 	
+	@OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private Endereco endereco;
 	
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public long getId() {
 		return id;
@@ -130,7 +148,8 @@ public class Aluno implements Serializable {
 		return "Matrícula: " + getMatricula()
 		+ "\nNome: " + getNome()
 		+ "\nCpf: " + getCpf()
-		+ "\nData Nascimento: " + getDataNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		+ "\nData Nascimento: " + getDataNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+		+ "\nEndereço: " + this.getEndereco();
 	}
 
 }

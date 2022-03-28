@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -50,6 +52,9 @@ public class Disciplina implements Serializable {
 	
 	@Column(name="dt_atualizacao", nullable = false)
 	private LocalDateTime dataAtualizacao;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Curso curso;
 	
 	public Long getId() {
 		return id;
